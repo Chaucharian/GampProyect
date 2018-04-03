@@ -19,6 +19,10 @@ export default class Player {
       this.angle = 0;
       this.bullets = new Array();
 
+      //Shoot logic
+      this.currentShootTime = 0;
+      this.lastShootTime = 0;
+
       //body properties
       this.mass = this.body.mass;
       this.Fx = 0.004 * this.mass; //run Force on ground
@@ -65,6 +69,14 @@ export default class Player {
 
     moveRight() {
       if(this.onFloor == true) this.body.force.x = this.Fx / this.delta;
+    }
+
+    attemptShoot(position) {
+      this.currentShootTime = Date.now();
+      if(this.currentShootTime >= this.lastShootTime) {
+        this.shoot(position);
+        this.lastShootTime = this.currentShootTime + 500;
+      }
     }
 
     shoot(position) {

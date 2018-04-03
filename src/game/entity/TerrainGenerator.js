@@ -130,13 +130,13 @@ export default class TerrainGenerator {
           lineWidth: 3
       } }));
 
-      this.terrain.push(this.Bodies.rectangle(this.width /2, 25, this.width, 50, { isStatic: true ,
+      this.terrain.push(this.Bodies.rectangle(this.width /2, 25, this.width, 50, { isStatic: true , label : "Horizontal-platform",
         render: {
           fillStyle: 'green',
           strokeStyle: 'green',
           lineWidth: 3
       } }));
-      this.terrain.push(this.Bodies.rectangle(this.width /2, this.height - 25, this.width, 50, { isStatic: true ,
+      this.terrain.push(this.Bodies.rectangle(this.width /2, this.height - 25, this.width, 50, { isStatic: true , label : "Horizontal-platform",
         render: {
           fillStyle: 'green',
           strokeStyle: 'green',

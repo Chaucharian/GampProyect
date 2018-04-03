@@ -31,7 +31,11 @@ const keys = {
   KEY_DOWN : 40,
   KEY_SPACE : 32,
   P : 80, // pause key offcourse
-  M : 77 //making mode
+  M : 77, //making mode
+  A : 65,
+  S : 83,
+  D : 68,
+  W : 87
 };
 
 export default class WorldGame {
@@ -172,11 +176,11 @@ export default class WorldGame {
     });
 
     Events.on(this.engine,'collisionActive',event => {
-      this.handleActiveCollision(event);
+      this.activeCollisionHandler(event);
     });
 
     Events.on(this.engine,'collisionEnd',event => {
-      this.handleEndCollision(event);
+      this.endCollisionHandler(event);
     });
 
   }
@@ -192,18 +196,18 @@ export default class WorldGame {
       this.enemy2.update(this.delta);
 
       //Player Movement
-      if(pressingKeys[keys.KEY_UP]){
+      if(pressingKeys[keys.KEY_UP] || pressingKeys[keys.W]){
         this.player.jump();
-      } else if(pressingKeys[keys.KEY_RIGHT]){
+      } else if(pressingKeys[keys.KEY_RIGHT] || pressingKeys[keys.D]){
         this.player.moveRight();
         //Body.setVelocity(this.player.getBody(), );
-      } else if(pressingKeys[keys.KEY_LEFT]){
+      } else if(pressingKeys[keys.KEY_LEFT] || pressingKeys[keys.A]){
         this.player.moveLeft();
         //Body.setVelocity(this.player.getBody(), { x: -movement*1.5, y: 0 });
       }
 
       if(mouse.click) {
-        this.player.shoot(mouse.position);
+        this.player.attemptShoot(mouse.position);
       }
 
       this.deltaGeter();
@@ -242,14 +246,14 @@ export default class WorldGame {
     context.strokeText(message, this.WIDHT /2, this.HEIGHT /2);
   }
 
-  handleActiveCollision(event) {
+  activeCollisionHandler(event) {
     let length = event.pairs.length;
 
     for(let i = 0; i < length; i++) {
       let pair = event.pairs[i];
 
       if((pair.bodyA.label === 'Player' || pair.bodyB.label === 'Player')) {
-        this.player.onFloor = true;
+        if((pair.bodyA.label === 'Horizontal-platform' || pair.bodyB.label === 'Horizontal-platform')) this.player.onFloor = true;
       } else if((pair.bodyA.label === 'Portal' || pair.bodyB.label === 'Portal')){
         //console.log("ea");
       } else if((pair.bodyA.label === 'Enemy' || pair.bodyB.label === 'Enemy')){
@@ -260,14 +264,14 @@ export default class WorldGame {
     }
   }
 
-  handleEndCollision(event) {
+  endCollisionHandler(event) {
     let length = event.pairs.length;
 
     for(let i = 0; i < length; i++) {
       let pair = event.pairs[i];
 
       if((pair.bodyA.label === 'Player' || pair.bodyB.label === 'Player')) {
-        this.player.onFloor = false;
+        if((pair.bodyA.label === 'Horizontal-platform' || pair.bodyB.label === 'Horizontal-platform')) this.player.onFloor = false;
       } else if((pair.bodyA.label === 'Portal' || pair.bodyB.label === 'Portal')){
 
       } else if((pair.bodyA.label === 'Enemy' || pair.bodyB.label === 'Enemy')){

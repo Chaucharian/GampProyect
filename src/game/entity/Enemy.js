@@ -45,7 +45,7 @@ export default class Enemy {
       } else if(this.state === STATE.shooting) {
         this.shoot(this.worldGame.getPlayer());
       }
-
+      
       this.bulletCycle();
     }
 
@@ -161,8 +161,16 @@ export default class Enemy {
     }
 
     walkAround() {
-      //If the player reaches its final position generate a new one to reach and again
       if(this.position.x == this.targetPosition) {
+        clearInterval(this.walkInterval);
+        this.targetPosition = this.determinateNewPosition();
+      } else if(!this.alreadyCalled) {
+
+        this.alreadyCalled = true;
+      }
+
+      //If the player reaches its final position generate a new one to reach and again
+      /*if(this.position.x == this.targetPosition) {
         clearInterval(this.walkInterval);
         this.targetPosition = this.determinateNewPosition();
         this.alreadyCalled = false //this flags allows only call once, cause setInterval handles the movement
@@ -180,7 +188,7 @@ export default class Enemy {
         }
 
         this.alreadyCalled = true;
-      }
+      }*/
     }
 
     walkToOpositeSide() {
